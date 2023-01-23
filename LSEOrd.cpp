@@ -95,6 +95,55 @@ void LSE::Imprimir()
 		cout<<"\n"<<setw(10)<<i->RegNom()<<setw(10)<<i->RegEdad()<<setw(10)<<i->RegAlt()<<setw(10)<<i->RegPeso();
 }
 
+void LSE::InsOrd(Datos x)
+{
+	Nodo *p,*q;
+	if(st==NULL){
+		gen=new Nodo(x);
+		if(gen==NULL){
+			cout<<"No hay memoria";
+			exit(1);
+		} 
+		st=ed=gen;	
+	}
+	else{
+		p=st;
+		if(x.edad<p->RegEdad()){
+			gen = new Nodo(x,p);
+			if(gen==NULL){
+			cout<<"No hay memoria";
+			exit(1);
+		} 	
+		st=gen;
+		}
+		else{
+			p=ed;
+			if(x.edad>p->RegEdad()){
+				gen = new Nodo(x);
+				if(gen==NULL){
+				cout<<"No hay memoria";
+				exit(1);
+				}
+				ed = gen;
+				p->ModSig(gen);
+			}
+			else{
+				p=st;
+				while(x.edad>p->RegEdad()){
+					q=p;
+					p=p->RegSig();
+				}
+				gen= new Nodo(x,p);
+				if(gen==NULL){
+				cout<<"No hay memoria";
+				exit(1);
+				}
+				q->ModSig(gen);
+			}
+		}
+	}
+}
+
 
 
 
@@ -108,8 +157,9 @@ int main()
 		system("cls");
 		cout<<"\t\tMENU";
 		cout<<"\n\t1.- Insertar";
-		cout<<"\n\t2.- Imprimir";
-		cout<<"\n\t3.- Salir";
+		cout<<"\n\t2.- Insertar Ordenado";
+		cout<<"\n\t3.- Imprimir";
+		cout<<"\n\t4.- Salir";
 		cout<<"\n\t\t\t Opcion: ";
 		cin>>opc;
 	
@@ -121,10 +171,16 @@ int main()
 				R.Insertar(G);
 				break;
 			case 2:
+				cout<<"\nLista ordenada por la edad:";
+				G = LeerDatos();
+				R.InsOrd(G);
+				break;
+			case 3:
 				cout<<"\nLos valores de la lista:"<<endl;
 				R.Imprimir();
 				getch();
 				break;
+			
 			default:
 				cout<<"\n\n\tGracias por usar este software"<<endl;
 				getch();
