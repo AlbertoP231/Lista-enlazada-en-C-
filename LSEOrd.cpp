@@ -56,10 +56,13 @@ public:
 class LSE 
 {
 	Nodo *st, *ed, *gen;
+	Nodo *aux,*aux1;
 	public:
 		LSE(){ st = ed = gen = NULL; }
 		void Insertar (Datos x);
 		void InsOrd (Datos x);
+		void Buscar(Datos x);
+		void Eliminar();
 		void Imprimir ();		
 };
 
@@ -144,8 +147,37 @@ void LSE::InsOrd(Datos x)
 	}
 }
 
+void LSE::Buscar(Datos x)
+{
+	aux=st;
+	while(x.edad!=aux->RegEdad()){
+		aux1 = aux;
+		aux = aux->RegSig();
+	}
+	cout<<"Valor encontrado"<<aux->RegEdad();
+}
 
-
+void LSE::Eliminar()
+{
+	if(aux==st){
+		st=aux->RegSig();
+		aux->ModSig(NULL);
+		delete aux;
+		return;
+	}
+	else{
+		if(aux==ed){
+			ed=aux1;
+			aux1->ModSig(NULL);
+			delete aux;
+			return;
+		}
+		else{
+			aux1->ModSig(aux->RegSig());
+			aux->ModSig(NULL);
+		}
+	}	
+} 
 
 int main()
 {
